@@ -1,0 +1,40 @@
+{% if edit_mode %}
+    <div class="p-4 bg-amber-50 flex items-center gap-4 animate-in fade-in" id="action-{{ action.id }}">
+        <div class="flex-grow">
+            <p class="text-xs font-bold text-amber-700 uppercase mb-1">Edit Points</p>
+            <form hx-put="/fragments/actions/{{ action.id }}" hx-target="#action-{{ action.id }}" hx-swap="outerHTML" class="flex gap-2">
+                <input type="number" name="points_earned" value="{{ action.points_earned }}" 
+                    class="w-24 px-2 py-1 text-sm border border-amber-300 rounded focus:outline-none focus:ring-1 focus:ring-amber-500">
+                <button type="submit" class="bg-amber-600 text-white px-3 py-1 rounded text-sm font-medium hover:bg-amber-700">Save</button>
+                <button hx-get="/fragments/actions/{{ action.id }}/edit" hx-target="#action-{{ action.id }}" hx-swap="outerHTML" 
+                    type="button" class="text-amber-700 text-sm hover:underline px-2">Cancel</button>
+            </form>
+        </div>
+    </div>
+{% else %}
+    <div class="p-4 hover:bg-slate-50 transition-colors flex items-center justify-between group" id="action-{{ action.id }}">
+        <div class="flex items-center gap-4">
+            <div class="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
+                <i data-lucide="leaf" class="h-5 w-5"></i>
+            </div>
+            <div>
+                <p class="font-medium text-slate-800">{{ action.action_type.name }}</p>
+                <p class="text-xs text-slate-500">{{ action.logged_at.strftime('%b %d, %H:%M') }}</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="font-bold text-primary bg-green-50 px-2 py-1 rounded text-sm">+{{ action.points_earned }} pts</span>
+            
+            <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button hx-get="/fragments/actions/{{ action.id }}/edit" hx-target="#action-{{ action.id }}" hx-swap="outerHTML"
+                    class="p-1.5 text-slate-400 hover:text-amber-500 hover:bg-amber-50 rounded transition-colors" title="Edit">
+                    <i data-lucide="pencil" class="h-4 w-4"></i>
+                </button>
+                <button hx-delete="/fragments/actions/{{ action.id }}" hx-target="#action-{{ action.id }}" hx-swap="outerHTML" hx-confirm="Delete this action?"
+                    class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors" title="Delete">
+                    <i data-lucide="trash-2" class="h-4 w-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+{% endif %}

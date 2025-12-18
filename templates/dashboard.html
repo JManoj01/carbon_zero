@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-6xl">
+    
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-slate-800 mb-1">Dashboard</h1>
+        <p class="text-slate-500 text-sm mb-6">Welcome back, {{ user.email }}</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+                <div class="p-3 bg-green-100 text-green-600 rounded-full">
+                    <i data-lucide="trophy" class="h-6 w-6"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-slate-500">Total Points</p>
+                    <p class="text-2xl font-bold text-slate-800">{{ user.total_points }}</p>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+                <div class="p-3 bg-orange-100 text-orange-600 rounded-full">
+                    <i data-lucide="flame" class="h-6 w-6"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-slate-500">Current Streak</p>
+                    <p class="text-2xl font-bold text-slate-800">{{ user.current_streak }} Days</p>
+                </div>
+            </div>
+             <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+                <div class="p-3 bg-blue-100 text-blue-600 rounded-full">
+                    <i data-lucide="home" class="h-6 w-6"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-slate-500">Your Dorm</p>
+                    <p class="text-xl font-bold text-slate-800">{{ user.dorm.name }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <div class="lg:col-span-2 space-y-6">
+            
+            <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+                    <h3 class="font-semibold text-slate-800">Log Activity</h3>
+                    <i data-lucide="plus-circle" class="h-5 w-5 text-slate-400"></i>
+                </div>
+                <div class="p-6">
+                    <form hx-post="/fragments/actions/log" hx-target="#action-list" hx-swap="afterbegin" hx-on::after-request="this.reset()">
+                        <div class="flex gap-3">
+                            <select name="action_type_id" class="flex-1 p-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/50 outline-none">
+                                <option value="" disabled selected>Select an action...</option>
+                                {% for at in action_types %}
+                                    <option value="{{ at.id }}">{{ at.name }} (+{{ at.base_points }} pts)</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="bg-primary hover:bg-green-700 text-white px-6 py-3 rounded-lg font-bold shadow-sm transition-all flex items-center gap-2">
+                                Log <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                 <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+                    <h3 class="font-semibold text-slate-800">Recent History</h3>
+                    <i data-lucide="history" class="h-5 w-5 text-slate-400"></i>
+                </div>
+                <div id="action-list" class="divide-y divide-slate-100">
+                    {% for action in actions %}
+                        {% include 'fragments/action_row.html' %}
+                    {% endfor %}
+                    {% if not actions %}
+                        <div class="p-8 text-center text-slate-400">No actions logged yet.</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden sticky top-24">
+                <div class="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+                    <h3 class="font-semibold text-slate-800">Leaderboard</h3>
+                    <span class="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-1 rounded-full uppercase tracking-wide">Live</span>
+                </div>
+                
+                <div hx-get="/fragments/leaderboard" hx-trigger="load, every 30s" hx-swap="innerHTML">
+                    <div class="p-4 text-center text-slate-400 text-sm">Loading rankings...</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+        <div class="text-left space-y-6">
+            <h1 class="text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
+                Accelerating <br/> <span class="text-primary">Carbon Zero</span>
+            </h1>
+            <p class="text-lg text-slate-600 leading-relaxed">
+                Log sustainable actions, earn points, and compete with other dorms to make UMass greener. Join the movement today.
+            </p>
+            <div class="flex gap-4">
+                <div class="flex items-center gap-2 text-sm font-medium text-slate-500">
+                    <div class="p-2 bg-green-100 rounded-full"><i data-lucide="trophy" class="h-4 w-4 text-green-600"></i></div>
+                    Earn Points
+                </div>
+                <div class="flex items-center gap-2 text-sm font-medium text-slate-500">
+                    <div class="p-2 bg-blue-100 rounded-full"><i data-lucide="users" class="h-4 w-4 text-blue-600"></i></div>
+                    Compete
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden max-w-md mx-auto w-full">
+            <div class="p-8" x-data="{ mode: 'login' }">
+                
+                <div id="login-form">
+                    <h2 class="text-2xl font-bold mb-2 text-slate-800">Welcome Back</h2>
+                    <p class="text-sm text-slate-500 mb-6">Enter your credentials to access your dashboard.</p>
+                    
+                    <form action="/auth/login" method="post" class="space-y-4">
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold uppercase text-slate-500">Email</label>
+                            <input type="email" name="email" required placeholder="student@umass.edu" 
+                                class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold uppercase text-slate-500">Password</label>
+                            <input type="password" name="password" required 
+                                class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all">
+                        </div>
+                        <button class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-lg transition-all shadow-lg shadow-slate-900/20">
+                            Sign In
+                        </button>
+                    </form>
+                    
+                    <div class="mt-6 text-center text-sm">
+                        <span class="text-slate-500">New here?</span>
+                        <button onclick="document.getElementById('login-form').classList.add('hidden'); document.getElementById('register-form').classList.remove('hidden');" 
+                            class="text-primary font-bold hover:underline ml-1">Create Account</button>
+                    </div>
+                </div>
+
+                <div id="register-form" class="hidden animate-in fade-in slide-in-from-right-4 duration-300">
+                    <h2 class="text-2xl font-bold mb-2 text-slate-800">Join Mass Impact</h2>
+                    <p class="text-sm text-slate-500 mb-6">Start tracking your sustainability journey.</p>
+
+                    <form action="/auth/register" method="post" class="space-y-4">
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold uppercase text-slate-500">Email</label>
+                            <input type="email" name="email" required placeholder="student@umass.edu" 
+                                class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold uppercase text-slate-500">Password</label>
+                            <input type="password" name="password" required 
+                                class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold uppercase text-slate-500">Dorm</label>
+                            <select name="dorm_id" class="w-full px-3 py-2 border border-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary/50">
+                                {% for dorm in dorms %}
+                                    <option value="{{ dorm.id }}">{{ dorm.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button class="w-full bg-primary hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-all shadow-lg shadow-green-600/20">
+                            Create Account
+                        </button>
+                    </form>
+
+                    <div class="mt-6 text-center text-sm">
+                        <span class="text-slate-500">Already have an account?</span>
+                        <button onclick="document.getElementById('register-form').classList.add('hidden'); document.getElementById('login-form').classList.remove('hidden');" 
+                            class="text-primary font-bold hover:underline ml-1">Sign In</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="border-t border-slate-200 pt-8 text-center">
+        <p class="text-slate-400 text-sm">Built for the UMass Carbon Zero Initiative 🌿</p>
+    </div>
+</div>
+{% endblock %}

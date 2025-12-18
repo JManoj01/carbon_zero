@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+sqlmodel
+jinja2
+python-multipart
+passlib[bcrypt]
+email-validator
+psycopg2-binary

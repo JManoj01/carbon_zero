@@ -1,0 +1,13 @@
+<div class="divide-y divide-slate-100">
+    {% for dorm in dorms %}
+    <div class="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
+        <div class="flex items-center gap-3">
+            <span class="flex h-6 w-6 items-center justify-center rounded bg-slate-100 text-xs font-bold text-slate-500">
+                {{ loop.index }}
+            </span>
+            <span class="font-medium text-slate-700">{{ dorm.name }}</span>
+        </div>
+        <span class="font-bold text-slate-900">{{ dorm.total_points }} pts</span>
+    </div>
+    {% endfor %}
+</div>
